@@ -353,6 +353,35 @@ class Duolingo(object):
                     data.append(lang['language_string'])
         return data
 
+        
+
+    def get_all_languages(self):
+        """
+        Get practiced languages, considering all possible combinations, from
+        ``https://www.duolingo.com/2017-06-30/users/<user_id>?fields=courses
+
+        :return: List of languages
+        :rtype: dictionary of dict
+        """
+        url = 'https://www.duolingo.com/2017-06-30/users/{}?fields=courses'
+        url = url.format(self.user_data.id)
+
+        results = self._make_req(url).json()
+        data = {}
+
+        for course in results['courses']:
+           learningLanguage = course['learningLanguage']
+           fromLanguage = course['fromLanguage']
+           language_id = f"{learningLanguage}_{fromLanguage}"
+           xp = course['xp']
+           crowns = course['crowns']
+           data[language_id] = { 
+              'fromLanguage': fromLanguage, 
+              'xp': xp, 
+              'crowns': crowns
+           }
+        return data
+
     def get_language_from_abbr(self, abbr):
         """Get language full name from abbreviation."""
         for language in self.user_data.languages:
@@ -410,7 +439,7 @@ class Duolingo(object):
 
         fields = ['streak', 'language_string', 'level_progress',
                   'num_skills_learned', 'level_percent', 'level_points',
-                  'points_rank', 'next_level', 'level_left', 'language',
+                  'next_level', 'level_left', 'language',
                   'points', 'fluency_score', 'level']
 
         return self._make_dict(fields, self.user_data.language_data[lang])

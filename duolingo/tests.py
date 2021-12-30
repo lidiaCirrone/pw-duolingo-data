@@ -155,7 +155,6 @@ class DuolingoLoginTest(unittest.TestCase):
         assert "next_level" in response
         assert "num_skills_learned" in response
         assert "points" in response
-        assert "points_rank" in response
         assert "streak" in response
 
     def test_get_known_topics(self):

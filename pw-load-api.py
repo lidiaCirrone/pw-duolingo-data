@@ -14,13 +14,18 @@ for lang in language_data:
     learning_language_abbr = lang
 
 language_progress = duo_user.get_language_progress(learning_language_abbr)
-xp = language_data[learning_language_abbr]['points_ranking_data_dict'][str(userid)]['points_data']['total']
 current_languages = duo_user.get_languages(abbreviations=True)
+
+# xp = language_data[learning_language_abbr]['points_ranking_data_dict'][str(userid)]['points_data']['total']
+all_current_languages = duo_user.get_all_languages()
+total_points = 0
+for lang in all_current_languages.values():
+   total_points += lang['xp']
 
 user_object = {
     'username': username,
     'streak': language_progress['streak'],
-    'xp': xp,
+    'xp': total_points,
     'learning_language': {
         'string': language_progress['language_string'],
         'level': language_progress['level'],
