@@ -24,7 +24,7 @@ function duolingo_api_call($attributes)
    $command = escapeshellarg(__DIR__  . '\pw-load-api.py');
    $output = shell_exec($command);
    $duo = json_decode($output);
-   $current_languages = $duo->current_languages;
+   $all_languages = $duo->all_languages;
    ob_start();
 ?>
    <div class="card">
@@ -64,10 +64,21 @@ function duolingo_api_call($attributes)
          </p>
          <div class="card-text my-3">
             all the languages I've been studying on Duolingo up until now:<br>
-            <?php foreach ($current_languages as $index => $language) {
-               if ($language == 'da') : ($language = 'dk');
+            <?php
+            foreach ($all_languages as $source => $target) {
+               if ($source == 'da') : ($source = 'dk');
+               endif;
+               if ($source == 'en') : ($source = 'gb');
                endif; ?>
-               <span class="flag-icon flag-icon-<?php echo $language; ?>"></span>
+               <span class="flag-icon flag-icon-<?php echo $source; ?>"></span> ->
+               <?php foreach ($target as $lang) {
+                  if ($lang == 'da') : ($lang = 'dk');
+                  endif;
+                  if ($target == 'en') : ($target = 'gb');
+                  endif; ?>
+                  <span class="flag-icon flag-icon-<?php echo $lang; ?>"></span>
+               <?php } ?>
+               <br>
             <?php } ?>
          </div>
          - <a href="https://www.duolingo.com/lidiaCirrone" target="_href" class="card-link">my profile</a><br>

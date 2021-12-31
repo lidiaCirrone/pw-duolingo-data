@@ -16,7 +16,21 @@ user_date_timestamp = user_total_info['creationDate']
 user_date_str = datetime.fromtimestamp(user_date_timestamp).strftime("%d/%m/%Y")
 
 language_progress = duo_user.get_language_progress(learning_language_abbr)
-current_languages = duo_user.get_languages(abbreviations=True)
+
+all_languages = {}
+for language in user_total_info['courses']:
+   target = language['learningLanguage']
+   source = language['fromLanguage']
+   # xp = language['xp']
+   # crowns = language['crowns']
+   if source not in all_languages:
+      all_languages[source] = []
+   all_languages[source].append(target)
+   # all_languages[source][target] = {
+   #    'xp': xp,
+   #    'crowns': crowns
+   #    }
+
 
 user_object = {
     'username': username,
@@ -28,7 +42,7 @@ user_object = {
         'level': language_progress['level'],
         'level_percent': language_progress['level_percent']
     },
-    'current_languages': current_languages
+    'all_languages': all_languages
 }
 
 print(json.dumps(user_object))
