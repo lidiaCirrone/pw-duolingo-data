@@ -5,11 +5,12 @@ import json, duolingo
 from datetime import datetime
 
 duo_user = duolingo.Duolingo('lidiaCirrone', 'hyaB_3cQN-ei')
-user_fields = ['courses','creationDate','id','learningLanguage','totalXp','trackingProperties']
+user_fields = ['courses','creationDate','id','learningLanguage', 'picture','totalXp','trackingProperties']
 user_total_info = duo_user.get_data_by_user_id(user_fields)
 
 username = user_total_info['trackingProperties']['username']
 userid = user_total_info['id']
+avatar = f"{user_total_info['picture']}/xlarge"
 learning_language_abbr = user_total_info['learningLanguage']
 
 user_date_timestamp = user_total_info['creationDate']
@@ -33,6 +34,7 @@ for language in user_total_info['courses']:
 
 
 user_object = {
+    'avatar': avatar,
     'username': username,
     'streak': language_progress['streak'],
     'xp': user_total_info['totalXp'],
