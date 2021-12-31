@@ -2,30 +2,27 @@
 # print("Content-Type: text/html\n")
 
 import json, duolingo
+from datetime import datetime
 
 duo_user = duolingo.Duolingo('lidiaCirrone', 'hyaB_3cQN-ei')
-user_info = duo_user.get_user_info()
-username = user_info['username']
-userid = user_info['id']
+user_fields = ['courses','creationDate','id','learningLanguage','totalXp','trackingProperties']
+user_total_info = duo_user.get_data_by_user_id(user_fields)
 
-language_data = user_info['language_data']
-learning_language_abbr = ''
-for lang in language_data:
-    learning_language_abbr = lang
+username = user_total_info['trackingProperties']['username']
+userid = user_total_info['id']
+learning_language_abbr = user_total_info['learningLanguage']
+
+user_date_timestamp = user_total_info['creationDate']
+user_date_str = datetime.fromtimestamp(user_date_timestamp).strftime("%d/%m/%Y")
 
 language_progress = duo_user.get_language_progress(learning_language_abbr)
 current_languages = duo_user.get_languages(abbreviations=True)
 
-# xp = language_data[learning_language_abbr]['points_ranking_data_dict'][str(userid)]['points_data']['total']
-all_current_languages = duo_user.get_all_languages()
-total_points = 0
-for lang in all_current_languages.values():
-   total_points += lang['xp']
-
 user_object = {
     'username': username,
     'streak': language_progress['streak'],
-    'xp': total_points,
+    'xp': user_total_info['totalXp'],
+    'creation_date': user_date_str,
     'learning_language': {
         'string': language_progress['language_string'],
         'level': language_progress['level'],
