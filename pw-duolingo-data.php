@@ -11,8 +11,9 @@ Author URI: http://polyglotwannabe.com/
 
 
 function flag_icons_styles()
-{
-   if (is_page('duolingo')) {
+{    
+   global $post;
+   if (is_page('duolingo') || has_shortcode( $post->post_content, 'pw_duolingo_data')) {
       wp_enqueue_style('flag-icons-main', plugins_url('pw-duolingo-data') . '/flag-icons-main/css/flag-icons.min.css', array(), null);
    }
 }
@@ -31,7 +32,7 @@ function duolingo_api_call($attributes)
       <div class="card-body small">
          <h5 class="card-title mb-3">
             <img src="<?php echo $duo->avatar; ?>" class="img-fluid rounded-circle w-20 me-2" alt="avatar">
-            <?php echo $duo->username; ?>
+            <a href="https://www.duolingo.com/lidiaCirrone" target="_href"><?php echo $duo->username; ?></a>
          </h5>
          <p class="card-subtitle text-pastel mt-0">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-top" viewBox="0 0 16 16">
