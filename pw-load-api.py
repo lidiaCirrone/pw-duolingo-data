@@ -3,8 +3,9 @@
 
 import json, duolingo
 from datetime import datetime
+from settings import duo_user_name, duo_user_password
 
-duo_user = duolingo.Duolingo('lidiaCirrone', 'hyaB_3cQN-ei')
+duo_user = duolingo.Duolingo(duo_user_name, duo_user_password)
 user_fields = ['courses','creationDate','id','learningLanguage', 'picture','totalXp','trackingProperties']
 user_total_info = duo_user.get_data_by_user_id(user_fields)
 
